@@ -46,6 +46,9 @@ export default ({
     )
     .sort((a: DraggableDimension, b: DraggableDimension): number => {
       // Need to consider the change in scroll in the destination
+      console.log("getClosestDraggable a", a);
+      console.log("getClosestDraggable b", b);
+      
       const distanceToA = distance(
         pageBorderBoxCenter,
         withDroppableDisplacement(
@@ -53,6 +56,7 @@ export default ({
           getCurrentPageBorderBoxCenter(a, afterCritical),
         ),
       );
+      console.log("distanceToA", distanceToA);
       const distanceToB = distance(
         pageBorderBoxCenter,
         withDroppableDisplacement(
@@ -60,7 +64,7 @@ export default ({
           getCurrentPageBorderBoxCenter(b, afterCritical),
         ),
       );
-
+      console.log("distanceToB", distanceToB);
       // if a is closer - return a
       if (distanceToA < distanceToB) {
         return -1;

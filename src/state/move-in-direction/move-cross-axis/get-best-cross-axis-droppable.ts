@@ -39,7 +39,8 @@ export default ({
   viewport,
 }: GetBestDroppableArgs): DroppableDimension | null => {
   const active: Rect | null = source.subject.active;
-
+  console.log("getBestCrossAxisDroppable", active);
+  
   if (!active) {
     return null;
   }
@@ -105,7 +106,7 @@ export default ({
         getKnownActive(droppable)[axis.crossAxisStart] ===
         getKnownActive(array[0])[axis.crossAxisStart],
     );
-
+    console.log("getBestCrossAxisDroppable, candidates", candidates);
   // no possible candidates
   if (!candidates.length) {
     return null;
@@ -118,7 +119,7 @@ export default ({
 
   // At this point we have a number of candidates that
   // all have the same axis.crossAxisStart value.
-
+  console.log("*** getBestCrossAxisDroppable, all have the same axis.crossAxisStart value");
   // Check to see if the center position is within the size of a Droppable on the main axis
   const contains: DroppableDimension[] = candidates.filter(
     (droppable: DroppableDimension) => {
@@ -129,7 +130,7 @@ export default ({
       return isWithinDroppable(pageBorderBoxCenter[axis.line]);
     },
   );
-
+  console.log("*** getBestCrossAxisDroppable, contains", contains);
   if (contains.length === 1) {
     return contains[0];
   }
@@ -148,12 +149,14 @@ export default ({
   // 2. If there is a tie - choose the one that is first on the main axis
   return candidates.sort(
     (a: DroppableDimension, b: DroppableDimension): number => {
+      console.log("*** getBestCrossAxisDroppable, a, b", a, b);
       const first = closest(pageBorderBoxCenter, getCorners(getKnownActive(a)));
       const second = closest(
         pageBorderBoxCenter,
         getCorners(getKnownActive(b)),
       );
-
+      console.log("*** getBestCrossAxisDroppable, first", first);
+      console.log("*** getBestCrossAxisDroppable, second", second);
       // if the distances are not equal - choose the shortest
       if (first !== second) {
         return first - second;
